@@ -1,0 +1,31 @@
+{% extends "crawler/layout.html" %} {% load static %}
+{% block body %}
+<div>
+    <h2>Pokémon</h2>
+
+    <ul class="list-group list-group-light">
+        {% for pokemon in object_list %}
+            <li class="list-group-item text-light"><img src={{ pokemon.official_artwork }}> <a href="/{{ pokemon.pokemon_id }}">{{ pokemon.name|title }}</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp    Height: {{ pokemon.height }} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp    Abilities: {{ pokemon.abilities|length }} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp    Moves: {{ pokemon.moves }}</li>
+        {% endfor %}
+    </ul>
+</div>
+
+<div class="pagination">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+        </span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">next</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+
+{% endblock %}

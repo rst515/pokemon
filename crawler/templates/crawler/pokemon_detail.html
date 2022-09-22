@@ -1,0 +1,15 @@
+{% extends "crawler/layout.html" %} {% load static %}
+{% block body %}
+<div>
+    <h2>{{ pokemon.name|title }}</h2>
+
+    <ul class="list-group list-group-light">
+
+            <li class="list-group-item text-light"><img src={{ pokemon.official_artwork }}> Height: {{ pokemon.height }} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp    Moves: {{ pokemon.moves }}  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp     Abilities: {{ pokemon.abilities|cut:"'"|cut:"["|cut:"]"|title }} </li>
+
+    </ul>
+</div>
+
+<a type="button" class="button btn-sm btn-outline-light text-light" href="/">< All Pokemon</a>
+
+{% endblock %}
