@@ -1,3 +1,7 @@
+'''
+Script to populate database from API.
+'''
+
 from crawler.models import Pokemon
 
 import pokebase as pb
@@ -11,7 +15,7 @@ def run():
     # poke_list = pb.APIResource('pokemon', '')
     # count = poke_list.count
 
-    # return the first 100 only
+    # return the first 100 only, uncomment count above and comment-out 2 lines below to change
     print('''Only the first 100 will be saved, to change this edit
     scripts/refresh.py''')
     count = 100

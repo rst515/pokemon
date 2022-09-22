@@ -45,7 +45,7 @@ This can be run using the command
 The following considerations have been given to performance at scale, to ensure good performance for the user of this service and users of the API
 - pagination of results from the database
 - it would perhaps be preferable to check for new pokemon and only add new ones to the database (not implemented but could be added)
-- an option to refresh the whole database is provided by the ```refresh.py``` script
+- an option to refresh the whole database is possible with the ```refresh.py``` script (editing required, see comments in that file)
 In practice, it may be preferable to consume the API from the source, or saving selected information, rather than saving a copy of everything.
 
 ## Testing
@@ -57,3 +57,12 @@ Conscious that this challenge was to take a few hours I am noting other things t
 - Trigger update of the database to add new items from a button in the ListView template.
 - Trigger refresh of whole database from a button in the ListView template.
 - Review choice of data collected - there may be more useful or interesting information that users might want to have in the database.
+
+## To use
+1. Clone the repo.
+2. Build the Docker container with ```docker build .``` inside the project directory.
+3. Run the Django migrate function with ```docker-compose run --rm web sh -c "python manage.py migrate"```
+4. Populate the database with ```docker-compose run --rm web sh -c "python manage.py runscript refresh"``` (will return first 100, see comments in ```refresh.py``` to change).
+5. Run the Django server with ```docker-compose up -d``` (runs in detatched background mode).
+6. Navigate to http://127.0.0.1:8000/ or http://127.0.0.1:8000/admin in the web browser to see the Pokemon.
+7. Run ```docker-compose down``` to stop the server.
