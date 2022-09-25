@@ -3,9 +3,15 @@
 <div>
     <h2>Pokémon</h2>
 
+    <a class="btn btn-sm btn-outline-warning" type="button" href="{% url 'update' %}">Update pokemon!</a>
+
+    {% if messages %}
+    {{ messages }}
+    {% endif %}
+
     <ul class="list-group list-group-light">
         {% for pokemon in object_list %}
-            <li class="list-group-item text-light"><img src={{ pokemon.official_artwork }}> <a href="/{{ pokemon.pokemon_id }}">{{ pokemon.name|title }}</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp    Height: {{ pokemon.height }} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp    Abilities: {{ pokemon.abilities|length }} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp    Moves: {{ pokemon.moves }}</li>
+            <li class="list-group-item text-light"><img src={{ pokemon.official_artwork }} width="100" height="100"> <a href="/{{ pokemon.pokemon_id }}">{{ pokemon.name|title }}</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp    Height: {{ pokemon.height }} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp    Abilities: {{ pokemon.abilities|length }} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp    Moves: {{ pokemon.moves }}</li>
         {% endfor %}
     </ul>
 </div>

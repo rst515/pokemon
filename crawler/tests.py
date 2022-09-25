@@ -4,8 +4,9 @@ Unit tests for crawler app.
 
 from django.test import TestCase
 from .models import Pokemon
+import requests
 
-import pokebase as pb
+API_URL = "http://pokeapi.co/api/v2/pokemon"
 
 
 class AppTests(TestCase):
@@ -13,32 +14,32 @@ class AppTests(TestCase):
     def test_connection_to_api(self):
         '''Test the API is available and responding by checking a call returns
         a non-empty list and save the result to the database.'''
-        poke_list = pb.APIResource('pokemon', '')
+        response = requests.get(API_URL)
 
-        self.assertTrue(poke_list.count >= 1)
+        self.assertTrue(response.status_code, 200)
 
     def test_saving_API_records_to_database(self):
         '''Test getting API records and saving to the database.'''
-        count = 5  # Limit to the first 5 entries otherwise will be
-        # waiting all day!
+        response = requests.get(API_URL)
+        count = response.json()['count']
+
+        all_pokemon_url = API_URL + f"?limit={count}"
+        poke_list = requests.get(all_pokemon_url)
+        results = poke_list.json()['results']
 
         for i in range(1, count):
-            pokemon = pb.APIResource('pokemon', i)
-            sprite = pb.SpriteResource(
-                'pokemon', i,
-                other=True,
-                official_artwork=True
-                )
+            pokemon = requests.get(results[i]['url']).json()
+            sprite = pokemon['sprites']['other']['official-artwork']['front_default']
 
             new_record = Pokemon(
-                pokemon_id=pokemon.id,
-                name=pokemon.name,
-                height=pokemon.height,
+                pokemon_id=pokemon['id'],
+                name=pokemon['name'],
+                height=pokemon['height'],
                 abilities=[
-                    ability.ability.name for ability in pokemon.abilities
+                    ability['ability']['name'] for ability in pokemon['abilities']
                     ],
-                moves=len(pokemon.moves),
-                official_artwork=sprite.url,
+                moves=len(pokemon['moves']),
+                official_artwork=sprite,
             )
             new_record.save()
 
